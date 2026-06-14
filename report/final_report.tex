@@ -183,6 +183,43 @@ $f\in[0,1]$, take the median of 5--7 timed iterations after a warm-up, and repor
 %------------------------------------------------------------------------------
 \section{Results}
 
+Fig.~\ref{fig:summary} gives the headline comparison: pure-CPU, pure-GPU, and the
+co-execution mix side-by-side for both micro-benchmarks. For the memory-bound stencil the
+mix is the fastest of the three; for the compute-bound GEMM the mix correctly collapses
+onto the GPU. The per-fraction sweeps that produce these optima follow.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=\columnwidth, height=5.0cm,
+  ybar=1.5pt, bar width=8pt,
+  ymode=log, log origin=infty,
+  ymin=5, ymax=900,
+  ylabel={Running time (ms, log scale)},
+  ylabel style={font=\footnotesize},
+  symbolic x coords={Stencil, GEMM},
+  xtick=data,
+  xticklabels={Stencil\\(memory-bound), GEMM\\(compute-bound)},
+  xticklabel style={align=center,font=\footnotesize},
+  legend style={font=\scriptsize,at={(0.5,1.03)},anchor=south,legend columns=3},
+  nodes near coords, point meta=explicit symbolic,
+  every node near coord/.append style={font=\tiny,rotate=90,anchor=west},
+  enlarge x limits=0.55, ymajorgrids,
+  tick label style={font=\footnotesize}]
+\addplot[fill=blue!55] coordinates {(Stencil,72.3)[72] (GEMM,362.2)[362]};
+\addplot[fill=green!50!black] coordinates {(Stencil,46.5)[46] (GEMM,8.4)[8.4]};
+\addplot[fill=orange!90!black] coordinates {(Stencil,43.9)[\textbf{44}] (GEMM,8.4)[8.4]};
+\legend{Pure CPU, Pure GPU, CPU+GPU mix}
+\end{axis}
+\end{tikzpicture}
+\caption{Pure CPU vs.\ pure GPU vs.\ optimal CPU+GPU mix (lower is better, log scale).
+The mix wins outright on the memory-bound stencil ($43.9$\,ms, $1.65\times$ over CPU,
+$1.06\times$ over GPU); on the compute-bound GEMM the GPU is $43\times$ the CPU, so the
+predicted split sends $97.7\%$ to the GPU and the mix matches pure GPU ($8.4$\,ms).}
+\label{fig:summary}
+\end{figure}
+
 \subsection{Memory-bound stencil: a true co-execution win}
 Fig.~\ref{fig:stencil} shows the makespan sweep. The CPU (4 cores) sustains
 $R_\mathrm{CPU}{=}7.4$\,GB/s and the V100 $R_\mathrm{GPU}{=}11.5$\,GB/s on this kernel ---
