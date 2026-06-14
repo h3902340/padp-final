@@ -1,0 +1,168 @@
+{
+  "3mm": {
+    "assignment": {
+      "Kernel 3mm 0": "GPU",
+      "Kernel 3mm 1": "GPU",
+      "Kernel 3mm 2": "GPU"
+    },
+    "assignment_bits": [
+      1,
+      1,
+      1
+    ],
+    "metrics": {
+      "cpu_baseline_ms": 5498.718,
+      "gpu_all_ms": 1520.4379999999996,
+      "best_hetero_ms": 1520.4379999999996,
+      "speedup_vs_cpu": 3.6165354983235103,
+      "all_assignments": {
+        "CCC": 5498.718,
+        "GCC": 3705.7824303999996,
+        "CGC": 3717.1867658666665,
+        "GGC": 1922.4123354666665,
+        "CCG": 5098.722335466667,
+        "GCG": 3305.7867658666664,
+        "CGG": 3315.2124303999994,
+        "GGG": 1520.4379999999996
+      }
+    },
+    "cpu_total_ms": 5498.75,
+    "gpu_total_ms": 1521.55
+  },
+  "adi": {
+    "assignment": {
+      "Init Array": "GPU",
+      "Kernel ADI": "GPU"
+    },
+    "assignment_bits": [
+      1,
+      1
+    ],
+    "metrics": {
+      "cpu_baseline_ms": 1257.5017899999998,
+      "gpu_all_ms": 200.75323,
+      "best_hetero_ms": 200.75323,
+      "speedup_vs_cpu": 6.263918094867016,
+      "all_assignments": {
+        "CC": 1257.5017899999998,
+        "GC": 1258.6036603999999,
+        "CG": 201.4902204,
+        "GG": 200.75323
+      }
+    },
+    "cpu_total_ms": 1258.64,
+    "gpu_total_ms": 200.758
+  },
+  "ced": {
+    "assignment": {
+      "Gaussian Filter": "GPU",
+      "Gradient": "GPU",
+      "Edge Thinning": "GPU",
+      "Double Threshold": "GPU",
+      "Hysteresis": "GPU"
+    },
+    "assignment_bits": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "metrics": {
+      "cpu_baseline_ms": 106.53361,
+      "gpu_all_ms": 42.42499,
+      "best_hetero_ms": 42.42499,
+      "speedup_vs_cpu": 2.511105129311757,
+      "all_assignments": {
+        "CCCCC": 106.53361,
+        "GCCCC": 87.55536639999998,
+        "CGCCC": 68.82145886666667,
+        "GGCCC": 46.63406246666667,
+        "CCGCC": 113.812651,
+        "GCGCC": 94.83440739999999,
+        "CGGCC": 72.52315493333333,
+        "GGGCC": 50.33575853333334,
+        "CCCGC": 106.13272313333333,
+        "GCCGC": 87.15447953333332,
+        "CGCGC": 68.420572,
+        "GGCGC": 46.233175599999996,
+        "CCGGC": 109.46622706666666,
+        "GCGGC": 90.48798346666666,
+        "CGGGC": 68.176731,
+        "GGGGC": 45.9893346,
+        "CCCCG": 107.28299460000001,
+        "GCCCG": 88.304751,
+        "CGCCG": 69.57084346666667,
+        "GGCCG": 47.38344706666667,
+        "CCGCG": 114.5620356,
+        "GCGCG": 95.58379199999999,
+        "CGGCG": 73.27253953333333,
+        "GGGCG": 51.08514313333334,
+        "CCCGG": 102.56837853333334,
+        "GCCGG": 83.59013493333333,
+        "CGCGG": 64.85622740000001,
+        "GGCGG": 42.668831,
+        "CCGGG": 105.90188246666668,
+        "GCGGG": 86.92363886666666,
+        "CGGGG": 64.6123864,
+        "GGGGG": 42.42499
+      }
+    },
+    "cpu_total_ms": 106.538,
+    "gpu_total_ms": 42.4296
+  },
+  "ppc": {
+    "assignment": {
+      "Compute forces": "CPU",
+      "Move particles": "CPU"
+    },
+    "assignment_bits": [
+      0,
+      0
+    ],
+    "metrics": {
+      "cpu_baseline_ms": 119.895,
+      "gpu_all_ms": 547.015,
+      "best_hetero_ms": 119.895,
+      "speedup_vs_cpu": 1.0,
+      "all_assignments": {
+        "CC": 119.895,
+        "GC": 288.27799999999996,
+        "CG": 382.032,
+        "GG": 547.015
+      }
+    },
+    "cpu_total_ms": 119.896,
+    "gpu_total_ms": 547.016
+  },
+  "sbf": {
+    "assignment": {
+      "Sobel filter x": "GPU",
+      "Sobel filter y": "GPU",
+      "Gradient magnitude": "CPU"
+    },
+    "assignment_bits": [
+      1,
+      1,
+      0
+    ],
+    "metrics": {
+      "cpu_baseline_ms": 43.889810000000004,
+      "gpu_all_ms": 24.934649999999998,
+      "best_hetero_ms": 15.359932466666665,
+      "speedup_vs_cpu": 2.8574220684399108,
+      "all_assignments": {
+        "CCC": 43.889810000000004,
+        "GCC": 30.3023664,
+        "CGC": 32.15652886666667,
+        "GGC": 15.359932466666665,
+        "CCG": 57.041872466666675,
+        "GCG": 43.45442886666667,
+        "CGG": 41.7312464,
+        "GGG": 24.934649999999998
+      }
+    },
+    "cpu_total_ms": 43.8926,
+    "gpu_total_ms": 24.9352
+  }
+}

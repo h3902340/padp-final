@@ -1,0 +1,222 @@
+{
+  "3mm": [
+    {
+      "kernel": "Kernel 3mm 0",
+      "type": "matrix",
+      "operational_intensity": 128,
+      "cpu_ridge_point": 2.16,
+      "gpu_ridge_point": 17.444444444444443,
+      "cpu_bound": "compute",
+      "gpu_bound": "compute",
+      "cpu_measured_ms": 2309.91,
+      "gpu_measured_ms": 516.055,
+      "cpu_roofline_ms": 1.2427567407407407,
+      "gpu_roofline_ms": 0.03419559949044586,
+      "recommended": "GPU"
+    },
+    {
+      "kernel": "Kernel 3mm 1",
+      "type": "matrix",
+      "operational_intensity": 128,
+      "cpu_ridge_point": 2.16,
+      "gpu_ridge_point": 17.444444444444443,
+      "cpu_bound": "compute",
+      "gpu_bound": "compute",
+      "cpu_measured_ms": 2299.75,
+      "gpu_measured_ms": 516.31,
+      "cpu_roofline_ms": 1.4913080888888888,
+      "gpu_roofline_ms": 0.04103471938853503,
+      "recommended": "GPU"
+    },
+    {
+      "kernel": "Kernel 3mm 2",
+      "type": "matrix",
+      "operational_intensity": 128,
+      "cpu_ridge_point": 2.16,
+      "gpu_ridge_point": 17.444444444444443,
+      "cpu_bound": "compute",
+      "gpu_bound": "compute",
+      "cpu_measured_ms": 889.058,
+      "gpu_measured_ms": 488.073,
+      "cpu_roofline_ms": 1.7398594370370368,
+      "gpu_roofline_ms": 0.047873839286624205,
+      "recommended": "GPU"
+    }
+  ],
+  "adi": [
+    {
+      "kernel": "Init Array",
+      "type": "elementwise",
+      "operational_intensity": 4,
+      "cpu_ridge_point": 2.16,
+      "gpu_ridge_point": 17.444444444444443,
+      "cpu_bound": "compute",
+      "gpu_bound": "memory",
+      "cpu_measured_ms": 5.39179,
+      "gpu_measured_ms": 5.57423,
+      "cpu_roofline_ms": 0.03883614814814815,
+      "gpu_roofline_ms": 0.0046603377777777785,
+      "recommended": "CPU"
+    },
+    {
+      "kernel": "Kernel ADI",
+      "type": "filter",
+      "operational_intensity": 8,
+      "cpu_ridge_point": 2.16,
+      "gpu_ridge_point": 17.444444444444443,
+      "cpu_bound": "compute",
+      "gpu_bound": "memory",
+      "cpu_measured_ms": 1252.11,
+      "gpu_measured_ms": 195.179,
+      "cpu_roofline_ms": 0.09320675555555555,
+      "gpu_roofline_ms": 0.005592405333333333,
+      "recommended": "GPU"
+    }
+  ],
+  "ced": [
+    {
+      "kernel": "Gaussian Filter",
+      "type": "filter",
+      "operational_intensity": 8,
+      "cpu_ridge_point": 2.16,
+      "gpu_ridge_point": 17.444444444444443,
+      "cpu_bound": "compute",
+      "gpu_bound": "memory",
+      "cpu_measured_ms": 22.4802,
+      "gpu_measured_ms": 1.89738,
+      "cpu_roofline_ms": 0.2045511851851852,
+      "gpu_roofline_ms": 0.01227307111111111,
+      "recommended": "GPU"
+    },
+    {
+      "kernel": "Gradient",
+      "type": "filter",
+      "operational_intensity": 8,
+      "cpu_ridge_point": 2.16,
+      "gpu_ridge_point": 17.444444444444443,
+      "cpu_bound": "compute",
+      "gpu_bound": "memory",
+      "cpu_measured_ms": 55.1672,
+      "gpu_measured_ms": 14.0618,
+      "cpu_roofline_ms": 0.24546142222222217,
+      "gpu_roofline_ms": 0.014727685333333332,
+      "recommended": "GPU"
+    },
+    {
+      "kernel": "Edge Thinning",
+      "type": "sequential",
+      "operational_intensity": 1,
+      "cpu_ridge_point": 2.16,
+      "gpu_ridge_point": 17.444444444444443,
+      "cpu_bound": "memory",
+      "gpu_bound": "memory",
+      "cpu_measured_ms": 15.4962,
+      "gpu_measured_ms": 19.0138,
+      "cpu_roofline_ms": 0.077320348,
+      "gpu_roofline_ms": 0.017182299555555555,
+      "recommended": "CPU"
+    },
+    {
+      "kernel": "Double Threshold",
+      "type": "elementwise",
+      "operational_intensity": 4,
+      "cpu_ridge_point": 2.16,
+      "gpu_ridge_point": 17.444444444444443,
+      "cpu_bound": "compute",
+      "gpu_bound": "memory",
+      "cpu_measured_ms": 10.1407,
+      "gpu_measured_ms": 5.61018,
+      "cpu_roofline_ms": 0.16364094814814817,
+      "gpu_roofline_ms": 0.01963691377777778,
+      "recommended": "GPU"
+    },
+    {
+      "kernel": "Hysteresis",
+      "type": "sequential",
+      "operational_intensity": 1,
+      "cpu_ridge_point": 2.16,
+      "gpu_ridge_point": 17.444444444444443,
+      "cpu_bound": "memory",
+      "gpu_bound": "memory",
+      "cpu_measured_ms": 3.24931,
+      "gpu_measured_ms": 1.84183,
+      "cpu_roofline_ms": 0.099411876,
+      "gpu_roofline_ms": 0.022091528,
+      "recommended": "GPU"
+    }
+  ],
+  "ppc": [
+    {
+      "kernel": "Compute forces",
+      "type": "filter",
+      "operational_intensity": 8,
+      "cpu_ridge_point": 2.16,
+      "gpu_ridge_point": 17.444444444444443,
+      "cpu_bound": "compute",
+      "gpu_bound": "memory",
+      "cpu_measured_ms": 107.762,
+      "gpu_measured_ms": 274.445,
+      "cpu_roofline_ms": 0.22222222222222224,
+      "gpu_roofline_ms": 0.013333333333333332,
+      "recommended": "CPU"
+    },
+    {
+      "kernel": "Move particles",
+      "type": "filter",
+      "operational_intensity": 8,
+      "cpu_ridge_point": 2.16,
+      "gpu_ridge_point": 17.444444444444443,
+      "cpu_bound": "compute",
+      "gpu_bound": "memory",
+      "cpu_measured_ms": 12.133,
+      "gpu_measured_ms": 272.57,
+      "cpu_roofline_ms": 0.26666666666666666,
+      "gpu_roofline_ms": 0.016,
+      "recommended": "CPU"
+    }
+  ],
+  "sbf": [
+    {
+      "kernel": "Sobel filter x",
+      "type": "filter",
+      "operational_intensity": 8,
+      "cpu_ridge_point": 2.16,
+      "gpu_ridge_point": 17.444444444444443,
+      "cpu_bound": "compute",
+      "gpu_bound": "memory",
+      "cpu_measured_ms": 20.5644,
+      "gpu_measured_ms": 5.37238,
+      "cpu_roofline_ms": 0.2045511851851852,
+      "gpu_roofline_ms": 0.01227307111111111,
+      "recommended": "GPU"
+    },
+    {
+      "kernel": "Sobel filter y",
+      "type": "filter",
+      "operational_intensity": 8,
+      "cpu_ridge_point": 2.16,
+      "gpu_ridge_point": 17.444444444444443,
+      "cpu_bound": "compute",
+      "gpu_bound": "memory",
+      "cpu_measured_ms": 20.5136,
+      "gpu_measured_ms": 5.38707,
+      "cpu_roofline_ms": 0.24546142222222217,
+      "gpu_roofline_ms": 0.014727685333333332,
+      "recommended": "GPU"
+    },
+    {
+      "kernel": "Gradient magnitude",
+      "type": "elementwise",
+      "operational_intensity": 4,
+      "cpu_ridge_point": 2.16,
+      "gpu_ridge_point": 17.444444444444443,
+      "cpu_bound": "compute",
+      "gpu_bound": "memory",
+      "cpu_measured_ms": 2.81181,
+      "gpu_measured_ms": 14.1752,
+      "cpu_roofline_ms": 0.14318582962962964,
+      "gpu_roofline_ms": 0.017182299555555555,
+      "recommended": "CPU"
+    }
+  ]
+}

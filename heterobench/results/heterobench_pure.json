@@ -1,0 +1,16 @@
+{
+  "description": "HeteroBench single-iteration time (ms), -O3 -march=native, 4 CPU cores, Tesla V100",
+  "benchmarks": {
+    "ced":  {"cpu_ms": 106.5, "gpu_ms": 42.4,  "favored": "GPU", "class": "memory-bound stencil"},
+    "sbf":  {"cpu_ms": 43.9,  "gpu_ms": 24.9,  "favored": "GPU", "class": "memory-bound stencil"},
+    "3mm":  {"cpu_ms": 5499.0,"gpu_ms": 1521.0,"favored": "GPU", "class": "compute-bound GEMM"},
+    "adi":  {"cpu_ms": 1259.0,"gpu_ms": 201.0, "favored": "GPU", "class": "memory-bound sweep"},
+    "ppc":  {"cpu_ms": 119.9, "gpu_ms": 547.0, "favored": "CPU", "class": "irregular n-body"},
+    "mlp":  {"cpu_ms": null,  "gpu_ms": 1508.9,"favored": "GPU", "class": "compute-bound GEMM", "note": "CPU > 400s timeout"},
+    "spf":  {"cpu_ms": 38.5,  "gpu_ms": 708.3, "favored": "CPU", "class": "irregular sparse/gradient"},
+    "cnn":  {"cpu_ms": 3469.6,"gpu_ms": 1839.9,"favored": "GPU", "class": "compute-bound conv"},
+    "oha":  {"cpu_ms": 965.1, "gpu_ms": 54.3,  "favored": "GPU", "class": "compute-bound attention"},
+    "opf":  {"cpu_ms": 77.5,  "gpu_ms": 471.4, "favored": "CPU", "class": "irregular multi-kernel"},
+    "dgr":  {"cpu_ms": null,  "gpu_ms": null,  "favored": "n/a", "class": "knn", "note": "build/run exceeded timeout"}
+  }
+}

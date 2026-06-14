@@ -1,0 +1,31 @@
+# Build artifacts
+coexec/coexec_gemm
+coexec/coexec_stencil
+*.o
+*.out
+*.err
+
+# HeteroBench is cloned by scripts/setup, never committed (multi-GB w/ data)
+HeteroBench/
+heterobench/HeteroBench/
+
+# Python
+__pycache__/
+*.pyc
+
+# LaTeX build cruft (keep final_report.pdf)
+report/*.aux
+report/*.log
+report/*.out
+report/*.bbl
+report/*.blg
+report/*.synctex.gz
+
+# SLURM logs
+*_*.out
+*_*.err
+slurm-*.out
+
+# Editor / OS
+.DS_Store
+.vscode/
