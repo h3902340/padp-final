@@ -119,7 +119,51 @@ $B$ memory bandwidth. Below the ridge point $I<P_\mathrm{peak}/B$ the kernel is
 \emph{memory-bound} and its throughput is set by bandwidth; above it the kernel is
 \emph{compute-bound} and throughput is set by peak FLOP/s. This single distinction, we
 argue, is what decides the co-execution outcome: it fixes the ratio
-$R_\mathrm{CPU}/R_\mathrm{GPU}$ that drives the optimal split.
+$R_\mathrm{CPU}/R_\mathrm{GPU}$ that drives the optimal split (Fig.~\ref{fig:roofline}).
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{loglogaxis}[
+  width=\columnwidth, height=6.0cm,
+  xlabel={Operational intensity $I$ (FLOP/byte)},
+  ylabel={Performance (GFLOP/s)},
+  xlabel style={font=\footnotesize}, ylabel style={font=\footnotesize},
+  xmin=0.5, xmax=1000, ymin=5, ymax=40000,
+  tick label style={font=\footnotesize}, grid=both, grid style={gray!18}]
+% GPU roofline: 900 GB/s, 15.7 TFLOP/s (ridge I=17.4)
+\addplot[blue, very thick] coordinates {(0.5,450)(17.44,15700)(1000,15700)};
+% CPU roofline: 4-core AVX-512, 128 GB/s, 768 GFLOP/s (ridge I=6.0)
+\addplot[red, very thick] coordinates {(0.5,64)(6.0,768)(1000,768)};
+% ridge guides
+\addplot[blue, dotted] coordinates {(17.44,5)(17.44,15700)};
+\addplot[red, dotted] coordinates {(6.0,5)(6.0,768)};
+% measured calibration points
+\addplot[blue, only marks, mark=square*, mark size=2.2pt] coordinates {(2,24.2)(200,2044)};
+\addplot[red, only marks, mark=*, mark size=2.2pt] coordinates {(2,15.5)(200,47)};
+\node[font=\tiny, blue] at (axis cs:2,90) {stencil};
+\node[font=\tiny, blue] at (axis cs:200,5200) {GEMM};
+\node[font=\tiny, anchor=west] at (axis cs:2.4,18) {$1.55\times$};
+\node[font=\tiny, anchor=east] at (axis cs:165,650) {$43\times$};
+\end{loglogaxis}
+\end{tikzpicture}
+\caption{Roofline for the V100 GPU (blue) and the 4-core CPU (red). The thick solid lines
+are the device rooflines (bandwidth diagonal then compute ceiling); the dotted vertical
+lines mark each device's ridge point $I_\mathrm{ridge}$ (left of it a kernel is
+memory-bound, right of it compute-bound). Filled squares are the GPU's measured throughput
+and filled circles the CPU's, for the stencil ($I{\approx}2$) and GEMM ($I{\approx}200$)
+calibration kernels.}
+\label{fig:roofline}
+\end{figure}
+
+What matters for co-execution is the \emph{vertical CPU$\leftrightarrow$GPU gap} in
+Fig.~\ref{fig:roofline}: at the memory-bound $3{\times}3$ stencil ($I{\approx}2$, left of
+both ridges) the attained throughputs differ by only $1.55\times$ ($15.5$ vs.\
+$24.2$\,GFLOP/s), so both devices contribute and $f^\star$ is interior; at compute-bound
+GEMM ($I{\approx}200$, right of both ridges) they differ by $43\times$ ($47$ vs.\
+$2044$\,GFLOP/s), so $f^\star\!\to\!1$ and the mix collapses to the GPU. Both naive kernels
+sit below the bandwidth/compute ceilings, but the CPU attains a larger \emph{fraction} of
+its (lower) peak in the memory-bound regime, which is what opens the co-execution window.
 
 \textbf{Static partitioning} of one kernel across devices is classical in HPC; our
 emphasis is that an AI agent can choose the partition \emph{analytically} from the
