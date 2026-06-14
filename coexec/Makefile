@@ -13,15 +13,18 @@ ARCH ?= sm_70
 NVCC ?= nvcc
 NVCCFLAGS = -O3 -arch=$(ARCH) -Xcompiler "-O3 -march=native -fopenmp"
 
-all: coexec_gemm coexec_stencil
+# Original two microbenchmarks + the 10 full HeteroBench co-execution drivers.
+MICRO = coexec_gemm coexec_stencil
+SUITE = coexec_3mm coexec_mlp coexec_oha coexec_cnn coexec_adi \
+        coexec_ced coexec_sbf coexec_opf coexec_spf coexec_ppc
 
-coexec_gemm: coexec_gemm.cu
-	$(NVCC) $(NVCCFLAGS) $< -o $@
+all: $(MICRO) $(SUITE)
+suite: $(SUITE)
 
-coexec_stencil: coexec_stencil.cu
+$(MICRO) $(SUITE): %: %.cu coexec_common.h
 	$(NVCC) $(NVCCFLAGS) $< -o $@
 
 clean:
-	rm -f coexec_gemm coexec_stencil
+	rm -f $(MICRO) $(SUITE)
 
-.PHONY: all clean
+.PHONY: all suite clean

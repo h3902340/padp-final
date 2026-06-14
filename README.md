@@ -27,6 +27,35 @@ model** instead of brute-forcing every value, and then validates the prediction 
   the model correctly predicts `f*→1` and co-execution gives no benefit. The agent *predicts* this
   from device throughput ratios rather than discovering it by exhaustive search.
 
+### Full HeteroBench: real co-execution of all ten benchmarks
+
+We then built **real concurrent CPU+GPU drivers for all ten HeteroBench applications**
+(`coexec/coexec_3mm.cu … coexec_ppc.cu`), each reimplementing the benchmark's kernels at the
+HeteroBench problem sizes in **both OpenMP and CUDA** and splitting the natural output domain by `f`.
+Sweeping `f∈[0,1]` gives the measured pure-CPU / pure-GPU / best-mix below (ms; V100 + 4 CPU cores,
+single precision; correctness confirmed by checksum invariance across `f`):
+
+| Bench | Class | Pure CPU | Pure GPU | **Mix (best f)** | `f*` | Optimal |
+|---|---|---:|---:|---:|:--:|:--:|
+| 3mm | compute GEMM      | 122.3  | 4.4   | 4.4   | 1.0 | GPU |
+| mlp | compute GEMM      | 10809  | 188.2 | 188.2 | 1.0 | GPU |
+| oha | compute attention | 486.4  | 29.9  | 29.9  | 1.0 | GPU |
+| cnn | conv + FC         | 300.2  | 65.6  | 65.6  | 1.0 | GPU |
+| adi | memory sweep      | 820.3  | 324.0 | 324.0 | 1.0 | GPU |
+| ced | image stencil     | 24.5   | 4.4   | 4.4   | 1.0 | GPU |
+| sbf | image stencil     | 5.2    | 3.0   | 3.0   | 1.0 | GPU |
+| opf | 4K pipeline       | 328.6  | 80.9  | 80.9  | 1.0 | GPU |
+| ppc | irregular n-body  | 674.4  | 382.3 | 382.3 | 1.0 | GPU |
+| spf | sequential SGD    | 653.5  | 1579.6| 653.5 | 0.0 | **CPU** |
+
+**The decisive result:** for **every** real benchmark the optimal mix is an **endpoint** — pure GPU
+for nine, pure CPU for the launch-bound `spf`. At real multi-kernel granularity the large device gap
+(1.8–57×) pushes `f*` to one device, and per-stage host↔device transfer/launch overhead erases the
+≤15–35 % balance-point gain. True concurrent splitting wins only in the narrow regime the stencil
+micro-benchmark isolates (comparable throughput **and** data resident across iterations). The AI's
+"optimal mix" is therefore to **commit each workload to the better device** — a decision it makes
+from the roofline ratio, not from brute force.
+
 The full write-up is in [`report/final_report.pdf`](report/final_report.pdf).
 
 ---
@@ -66,11 +95,15 @@ padp-final/
 │   ├── final_report.tex          ← IEEE-format final report (source)
 │   └── final_report.pdf          ← compiled report
 ├── coexec/                       ← CORE: concurrent CPU+GPU co-execution
+│   ├── coexec_common.h           ← shared concurrency + timing helpers
 │   ├── coexec_gemm.cu            ← compute-bound micro-benchmark (CUDA + OpenMP)
 │   ├── coexec_stencil.cu         ← memory-bound micro-benchmark (CUDA + OpenMP)
-│   ├── Makefile
-│   ├── run_coexec.sh             ← builds, sweeps f, runs the analyzer
-│   ├── analyze_coexec.py         ← roofline f* prediction + validation
+│   ├── coexec_3mm/mlp/oha/cnn/adi/ced/sbf/opf/spf/ppc.cu  ← all 10 HeteroBench drivers
+│   ├── Makefile                  ← `make` (all) / `make suite` (the 10 drivers)
+│   ├── run_coexec.sh             ← micro-benchmark sweep + analyzer
+│   ├── run_suite.sh              ← builds + sweeps f for all 10 benchmarks (SLURM-ready)
+│   ├── analyze_coexec.py         ← roofline f* prediction + validation (micro)
+│   ├── analyze_suite.py          ← summarizes the all-benchmark sweep
 │   └── results/                  ← committed reference outputs (CSV + JSON)
 ├── heterobench/                  ← real-benchmark profiling pipeline (optional)
 │   ├── setup_heterobench.sh      ← clones + patches HeteroBench (multi-GB, not committed)
@@ -138,6 +171,34 @@ Outputs land in `coexec/results/`:
 ```
 
 Tune the sweep with env vars: `STEN_H`, `STEN_W`, `GEMM_N`, `OMP_NUM_THREADS`, `ARCH`.
+
+---
+
+## Reproduce the full ten-benchmark co-execution suite (~5 minutes)
+
+Builds and sweeps `f∈[0,1]` for all ten HeteroBench co-execution drivers, then writes the
+side-by-side pure-CPU / pure-GPU / mix table (Table I and Fig. 4 in the report):
+
+```bash
+cd coexec
+make suite              # builds coexec_3mm … coexec_ppc  (override arch: make suite ARCH=sm_80)
+sbatch run_suite.sh     # SLURM; or run ./run_suite.sh directly on an interactive GPU node
+```
+
+Outputs:
+- `coexec/results/suite_sweep.csv` — raw `f`-sweep makespan per benchmark,
+- `coexec/results/suite_results.json` — pure-CPU/GPU/mix, `f*`, speedups, winner.
+
+Run a single benchmark/point manually:
+
+```bash
+./coexec_3mm  <f> <reps>     # e.g. ./coexec_3mm 0.5 3
+./coexec_spf  <f> <reps>     # CSV: name,frac,t_total_ms,t_cpu_ms,t_gpu_ms,checksum
+```
+
+> Note: the suite drivers reproduce each benchmark's kernels and HeteroBench sizes with
+> synthetic inputs (timing is data-independent for the dense kernels) and use single precision;
+> they measure a self-consistent pure-CPU/pure-GPU/mix triple from one program per benchmark.
 
 ---
 

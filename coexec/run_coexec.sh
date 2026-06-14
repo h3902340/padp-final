@@ -15,7 +15,7 @@
 #SBATCH -e coexec_%j.err
 
 set -euo pipefail
-cd "$(dirname "$0")"
+cd "${SLURM_SUBMIT_DIR:-$(dirname "$0")}"
 
 # --- Optional: load modules on TWCC Taiwania-2 (no-op elsewhere) ---
 if command -v module >/dev/null 2>&1; then

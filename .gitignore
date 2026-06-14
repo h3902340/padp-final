@@ -1,6 +1,7 @@
-# Build artifacts
-coexec/coexec_gemm
-coexec/coexec_stencil
+# Build artifacts: compiled co-execution binaries (keep the .cu/.h sources)
+coexec/coexec_*
+!coexec/coexec_*.cu
+!coexec/coexec_common.h
 *.o
 *.out
 *.err
